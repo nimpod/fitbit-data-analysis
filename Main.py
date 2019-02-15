@@ -5,14 +5,6 @@ def readJSON(filePath):
     with open(filePath, 'r') as f:
         return json.load(f)
 
-def writeJSON(filePath):
-    with open(filePath, 'w') as f:
-        json.dump([], f, indent=2)
-
-def appendToJSON(filePath, data):
-    with open(filePath, 'a') as f:
-        json.dump(data, f, indent=2)
-
 
 def getDate(dateTime):
     dateTimeArray = dateTime.split()
@@ -44,12 +36,9 @@ def extractDayData(specifiedDate, specifiedData, rawData, divisor):
         else:
             dailySum /= divisor
             return round(dailySum)
-        
-        #print(oldDate, newDate)
-
 
 def extractMonthOfData(startDate):
-    stepData     = readJSON('../../user-site-export/steps-' + startDate + '.json')
+    stepData = readJSON('../../user-site-export/steps-' + startDate + '.json')
     distanceData = readJSON('../../user-site-export/distance-' + startDate + '.json')
     altitudeData = readJSON('../../user-site-export/altitude-' + startDate + '.json')
     caloriesData = readJSON('../../user-site-export/calories-' + startDate + '.json')
@@ -59,29 +48,12 @@ def extractMonthOfData(startDate):
     for date in daterange:
         fileDate = getDate(str(date))
         jsonDate = convertToMDY(fileDate)
-
-        dayData = dict()
-
-        dayData['date'] = jsonDate
-        dayData['steps'] = extractDayData(jsonDate, 'steps', stepData, divisor=1)
-        dayData['distance'] = extractDayData(jsonDate, 'distance', distanceData, divisor=100000)
-        dayData['altitude'] = extractDayData(jsonDate, 'altitude', altitudeData, divisor=10)
-        dayData['calories'] = extractDayData(jsonDate, 'calories', caloriesData, divisor=1)
-
-        appendToJSON('health-data.json', dayData)
-
-#daterange = pd.date_range(start='2018-02-14', end='2018-03-15')
-#print(daterange)
+        
+        steps = extractDayData(jsonDate, 'steps', stepData, divisor=1)
+        distance = extractDayData(jsonDate, 'distance', distanceData, divisor=100000)
+        altitude = extractDayData(jsonDate, 'altitude', altitudeData, divisor=10)
+        calories = extractDayData(jsonDate, 'calories', caloriesData, divisor=1)
+        
 
 writeJSON('health-data.json')
 extractMonthOfData('2019-01-10')
-
-'''
-specifiedData = 'steps'
-stepData = readJSON('example.json')
-
-for eachObject in stepData['steps']:
-    del eachObject['dateTime']
-
-writeJSON('new_steps.json', stepData)
-'''
