@@ -65,5 +65,9 @@ def extractMonthlyData(startDate):
             csv_writer.writerow(dailyData)
             #print('wrote data from ' + fileDate + ' to csvfile')    
 
-extractMonthlyData('2018-11-11')
-#extractMonthlyData('2018-12-11')
+
+# extract all data between 2017-06-19 and 2019-01-10
+months = pd.date_range(start='2017-06-19', end='2019-01-10', periods=570)
+for i in range(len(months)):
+    if (i % 30 == 0):
+        extractMonthlyData(getDate(str(months[i])))
