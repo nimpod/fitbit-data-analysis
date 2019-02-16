@@ -50,9 +50,7 @@ def extractMonthlyData(startDate):
 
     for date in daterange:
         pdt = pandas.to_datetime(date)
-
         fileDate = pdt.date()
-        fileDay = pdt.weekday_name
 
         year, month, day = str(fileDate).split("-")
         fitbitDate = FitbitDate(year, month, day)
@@ -62,7 +60,7 @@ def extractMonthlyData(startDate):
         altitude = extractDailyData(fitbitDate, 'altitude', altitudeData, divisor=10)
         calories = extractDailyData(fitbitDate, 'calories', caloriesData, divisor=1)
         
-        dailyData = [fileDate, fileDay, steps, distance, altitude, calories]
+        dailyData = [fileDate, steps, distance, altitude, calories]
 
         with open('health-data.csv', 'a', newline='') as csvfile:
             csv_writer = csv.writer(csvfile)
