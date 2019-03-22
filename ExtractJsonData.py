@@ -59,7 +59,9 @@ def extractMonthlyData(startDate):
         distance = extractDailyData(fitbitDate, 'distance', distanceData, divisor=100000)
         altitude = extractDailyData(fitbitDate, 'altitude', altitudeData, divisor=10)
         calories = extractDailyData(fitbitDate, 'calories', caloriesData, divisor=1)
-        
+
+        print(fileDate)
+
         dailyData = [fileDate, steps, distance, altitude, calories]
 
         with open('health-data.csv', 'a', newline='') as csvfile:
@@ -69,7 +71,11 @@ def extractMonthlyData(startDate):
 
 
 # extract all data between 2017-06-19 and 2019-01-10
-months = pandas.date_range(start='2017-06-19', end='2019-01-10', periods=570)
-for i in range(len(months)):
-    if (i % 30 == 0):
-        extractMonthlyData(getDate(str(months[i])))
+def extractAllData():
+    months = pandas.date_range(start='2017-06-19', end='2019-01-10', periods=570)
+    for i in range(len(months)):
+        if (i % 30 == 0):
+            extractMonthlyData(getDate(str(months[i])))
+
+
+#extractAllData()
